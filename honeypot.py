@@ -69,6 +69,9 @@ def give_shell_access(channel, username):
                 command_buffer = ''  # Reset the command buffer
 
                 # Process the complete command
+                if command == "exit": 
+                    break
+                
                 response = process_command(command)
 
                 channel.send(response)
