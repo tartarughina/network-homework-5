@@ -2,6 +2,7 @@ import argparse
 import paramiko
 import socket
 import threading
+import concurrent.futures
 import time
 import os
 import re
@@ -166,11 +167,14 @@ def ssh_server(port):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('localhost', int(port)))
     server.listen(100)
-    print(f"Listening for connection on port {port}")
+    print(f"[*] Listening for connection on port {port}")
 
-    while True:
-        client, addr = server.accept()
-        threading.Thread(target=handle_client, args=(client,)).start()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        while True:
+            client, addr = server.accept()
+
+            print(f"[*] Accepted connection from {addr[0]}:{addr[1]}")
+            executor.submit(handle_client, client)
 
 
 def main():

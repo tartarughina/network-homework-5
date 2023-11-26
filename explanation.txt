@@ -1,0 +1,14 @@
+Online resources:
+https://www.paramiko.org
+https://www.linode.com/docs/guides/use-paramiko-python-to-ssh-into-a-server/
+https://medium.com/featurepreneur/ssh-in-python-using-paramiko-e08fd8a039f7
+
+I've used part of the previous homework as a starting point, mainly how to deal with concurrent connections.
+After that everything was related to setting up, following the Paramiko's guides I've found, the ssh server and connection.
+A roadblock that took me some time to solve was the default behavior of paramiko's ServerInterface when the client was required to authenticate itself.
+Creating an object inheriting from ServerInterface and implementing there the brute force counting was after all the best approach I could use.
+I then had to override some more functions inside my new custom server to allow the user to obtain a proper shell.
+After that I've handled the input of the client, gradually building a command till a CR or LF was received.
+The command handling is done with a heavy use of regex to extract the command's parameters more easily.
+The filesystem is based on a single dictionary shared by all users since the base path is always set to root.
+A final issue I had to deal with was related to the right combo of \r and \n to send back to the client.
