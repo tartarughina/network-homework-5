@@ -60,10 +60,10 @@ def give_shell_access(channel, username):
             break
 
         if channel.recv_ready():
+            last_interaction_time = time.time()
             char = channel.recv(1).decode('utf-8')  # Read one character at a time
             if char == '\r' or char == '\n':  # Check for carriage return or newline
                 channel.send("\r\n")
-                last_interaction_time = time.time()
                 command = command_buffer.strip()
                 command_buffer = ''  # Reset the command buffer
 
@@ -152,8 +152,6 @@ def handle_client(client_socket: socket):
         chan = transport.accept(20)
         if chan is None:
             raise Exception("Client did not open a channel.")
-        
-        chan.settimeout(60)
 
         # After 5 attempts, grant access
         give_shell_access(chan, server.get_username())
