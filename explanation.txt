@@ -12,3 +12,5 @@ After that I've handled the input of the client, gradually building a command ti
 The command handling is done with a heavy use of regex to extract the command's parameters more easily.
 The filesystem is based on a single dictionary shared by all users since the base path is always set to root.
 A final issue I had to deal with was related to the right combo of \r and \n to send back to the client.
+The timeout functionality is built using paramiko's timeout on blocking read/write operations, if an expection is received the ssh server
+sends back the reason for closing the connection and then proceed to do so.
